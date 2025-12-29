@@ -1,27 +1,26 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// 根目录 build.gradle 核心内容（仅展示需要修改的部分）
 buildscript {
     repositories {
-        gradlePluginPortal()
         google()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-        maven { url 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2' }
+        mavenCentral() // 替代已废弃的 jcenter()，避免依赖下载失败
+        // 其他仓库（如 jitpack 等）保持不变
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.1"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        // 关键修改：将插件版本改为与 Gradle 7.5 匹配的 7.2.2
+        // 原版本可能是 4.x/6.x，需替换成这一行
+        classpath 'com.android.tools.build:gradle:7.2.2'
+        
+        // 其他依赖（如 kotlin 插件、导航插件等）保持不变
+        // 示例：classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
     }
 }
 
+// 以下是全局仓库配置，保持不变即可
 allprojects {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
-        maven { url "https://jitpack.io" }
-        maven { url 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2' }
+        // 其他自定义仓库
     }
 }
 
