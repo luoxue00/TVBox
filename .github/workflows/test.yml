@@ -14,18 +14,29 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          
+      # 新增步骤：指定 Java 17 环境（匹配项目所需的 class file version 61）
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle # 可选：缓存 Gradle 依赖，加速后续构建
+          
       - name: Build With Gradle
         run: |
           chmod +x gradlew
-          ./gradlew assemblerelease --build-cache --parallel --daemon --warning-mode all
+          # 保留原有构建参数，Gradle 会自动使用项目配置的新版本
+          ./gradlew assembleRelease --build-cache --parallel --daemon --warning-mode all
+          
       - name: Prepare App
         run: |
           mkdir -p ${{ github.workspace }}/apk/
           for file in `find ~ -name "*.apk" -print`; do
             mv "$file" ${{ github.workspace }}/apk/
           done
+          
       - name: Upload App To Artifact
-        # 核心修改：将 v3 升级为 v4（解决废弃报错）
         uses: actions/upload-artifact@v4
         with:
           name: com.github.tvbox.osc
